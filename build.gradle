@@ -1,0 +1,48 @@
+/*
+ *     Copyright (C) 2016  Jonathan Beaudoin
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+group = 'org.anglur.vision'
+version = '0.1'
+
+apply plugin: 'kotlin'
+apply plugin: 'application'
+
+mainClassName = "org.anglur.vision.Vision"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    compile "no.tornado:tornadofx:1.5.5"
+    compile "org.controlsfx:controlsfx:8.40.12"
+}
+
+buildscript {
+    ext.kotlin_version = '1.0.4'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+
+}
