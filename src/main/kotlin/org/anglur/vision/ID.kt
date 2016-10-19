@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
 
 fun address(): InetSocketAddress {
 	val ip = URL("http://checkip.amazonaws.com/").readText().trim().replace("\n", "")
-	return InetSocketAddress(ip, Short.MAX_VALUE.toInt())
+	return InetSocketAddress(ip, 65535)
 }
 
 fun encode(address: InetSocketAddress): String {
