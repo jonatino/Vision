@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="353.0"
+            prefWidth="600.0" style="-fx-background-color: ebebebeb;" xmlns="http://javafx.com/javafx/8.0.60"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label layoutY="6.0" prefHeight="82.0" prefWidth="600.0" style="-fx-background-color: #3d3d3d;"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+        <ImageView fitHeight="57.0" fitWidth="303.0" layoutX="284.0" layoutY="15.0" pickOnBounds="true"
+                   preserveRatio="true" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="15.0">
+            <image>
+                <Image url="@../../../logo.png"/>
+            </image>
+        </ImageView>
+        <Label layoutX="16.0" layoutY="149.0" prefHeight="35.0" prefWidth="107.0" text="Your ID">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Label>
+        <Label layoutX="16.0" layoutY="190.0" prefHeight="35.0" prefWidth="107.0" text="Password">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Label>
+        <Label alignment="CENTER_RIGHT" layoutX="130.0" layoutY="149.0" prefHeight="35.0" prefWidth="129.0"
+               text="123 456 789">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Label>
+        <Label alignment="CENTER_RIGHT" layoutX="130.0" layoutY="190.0" prefHeight="35.0" prefWidth="129.0"
+               text="dsj324k">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Label>
+        <Separator layoutY="183.0" prefHeight="3.0" prefWidth="255.0"/>
+        <Separator layoutY="229.0" prefHeight="3.0" prefWidth="255.0"/>
+        <Button layoutX="15.0" layoutY="243.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="239.0"
+                style="-fx-background-radius: 0 0 0 0;" text="Copy to Clipboard">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Button>
+        <Button layoutX="15.0" layoutY="303.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="91.0"
+                style="-fx-background-radius: 0 0 0 0;" text="Generate ID"/>
+        <Separator layoutX="300.0" layoutY="82.0" orientation="VERTICAL" prefHeight="272.0" prefWidth="6.0"/>
+        <Label layoutX="319.0" layoutY="149.0" prefHeight="35.0" prefWidth="152.0" text="Connect to...">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="connection" layoutX="321.0" layoutY="189.0" prefHeight="35.0" prefWidth="266.0"
+                   style="-fx-border-radius: 0 0 0 0;"/>
+        <Button defaultButton="true" layoutX="322.0" layoutY="243.0" mnemonicParsing="false" prefHeight="44.0"
+                prefWidth="266.0" style="-fx-background-radius: 0 0 0 0;" text="Connect!">
+            <font>
+                <Font size="24.0"/>
+            </font>
+        </Button>
+        <Label layoutX="14.0" layoutY="82.0" prefHeight="57.0" prefWidth="266.0" text="Local Computer"
+               textFill="#00000054">
+            <font>
+                <Font size="31.0"/>
+            </font>
+        </Label>
+        <Label layoutX="319.0" layoutY="82.0" prefHeight="57.0" prefWidth="266.0" text="Remote Computer"
+               textFill="#00000054">
+            <font>
+                <Font size="31.0"/>
+            </font>
+        </Label>
+        <ImageView fitHeight="35.0" fitWidth="37.0" layoutX="563.0" layoutY="318.0" pickOnBounds="true"
+                   preserveRatio="true">
+            <image>
+                <Image url="@../../../github.png"/>
+            </image>
+        </ImageView>
+        <Label layoutX="390.0" layoutY="314.0" prefHeight="35.0" prefWidth="168.0" text="Check it out on Github! &lt;3">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <Button layoutX="118.0" layoutY="303.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="137.0"
+                style="-fx-background-radius: 0 0 0 0;" text="Generate Password"/>
+    </children>
+</AnchorPane>
