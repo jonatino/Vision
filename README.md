@@ -5,9 +5,12 @@
 * * *
 _Kotlin Based Cross-Platform Remote Desktop Software_
 
+[![Build Status](https://travis-ci.org/Jonatino/Vision.svg?branch=master)](https://travis-ci.org/Jonatino/Vision)
+[![license](https://img.shields.io/github/license/Jonatino/Vision.svg)](GPL-3.0)
 
+This library is licensed under GNU General Public License v3.0.
 
-
+Vision is an open source Kotlin application that provides FREE remote desktop capabilities on any platform.
 
 # Screenshots
 
