@@ -19,15 +19,15 @@ fun main(args: Array<String>) {
 }
 
 class Vision : View() {
-	
+
 	override val root: AnchorPane by fxml()
-	
+
 	@FXML lateinit var connection: TextField
-	
+
 	init {
 		with(primaryStage) {
 			title = "Vision"
-			
+
 			minHeight = 300.0
 			minWidth = 575.0
 			isResizable = false
@@ -35,23 +35,23 @@ class Vision : View() {
 			//TODO move CSS to external file once design is finalized (inline makes it easier in SceneBuilder)
 			//stylesheets.add(Css.MAIN)
 			//primaryStage.icons.add(Icons.FAVICON.image)
-			
+
 			Platform.runLater {
 				connection.requestFocus()
 			}
 		}
 	}
-	
+
 }
 
 class VisionApp : App() {
-	
+
 	override val primaryView = Vision::class
-	
+
 	override fun start(stage: Stage) {
 		primaryStage = stage
 		application = this
-		
+
 		val view = find(primaryView)
 		stage.apply {
 			scene = Scene(view.root)
@@ -59,5 +59,5 @@ class VisionApp : App() {
 			show()
 		}
 	}
-	
+
 }
