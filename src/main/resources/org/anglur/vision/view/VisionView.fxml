@@ -14,7 +14,7 @@
         <Label layoutY="6.0" prefHeight="82.0" prefWidth="600.0" style="-fx-background-color: #3d3d3d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         <ImageView fitHeight="57.0" fitWidth="303.0" layoutX="284.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="15.0">
             <image>
-                <Image url="@../../../logo.png" />
+                <Image url="@../../../../logo.png" />
             </image>
         </ImageView>
         <Label layoutX="16.0" layoutY="149.0" prefHeight="35.0" prefWidth="107.0" text="Your ID">
@@ -27,12 +27,12 @@
                 <Font size="20.0" />
             </font>
         </Label>
-        <Label fx:id="id" alignment="CENTER_RIGHT" layoutX="130.0" layoutY="149.0" prefHeight="35.0" prefWidth="129.0" text="123 456 789">
+        <Label fx:id="id" alignment="CENTER_RIGHT" layoutX="130.0" layoutY="149.0" prefHeight="35.0" prefWidth="129.0" text="Retrieving...">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <Label fx:id="password" alignment="CENTER_RIGHT" layoutX="130.0" layoutY="190.0" prefHeight="35.0" prefWidth="129.0" text="dsj324k">
+        <Label fx:id="password" alignment="CENTER_RIGHT" layoutX="130.0" layoutY="190.0" prefHeight="35.0" prefWidth="129.0" text="Retrieving...">
             <font>
                 <Font size="20.0" />
             </font>
@@ -69,7 +69,7 @@
         </Label>
         <ImageView fitHeight="35.0" fitWidth="37.0" layoutX="563.0" layoutY="318.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../../../github.png" />
+                <Image url="@../../../../github.png" />
             </image>
         </ImageView>
         <Label layoutX="390.0" layoutY="314.0" prefHeight="35.0" prefWidth="168.0" text="Check it out on Github! &lt;3">
