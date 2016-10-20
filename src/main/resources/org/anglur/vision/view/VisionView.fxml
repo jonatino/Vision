@@ -1,82 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="353.0" prefWidth="600.0" style="-fx-background-color: ebebebeb;" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="353.0"
+            prefWidth="600.0" style="-fx-background-color: ebebebeb;" xmlns="http://javafx.com/javafx/8.0.60"
+            xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label layoutY="6.0" prefHeight="82.0" prefWidth="600.0" style="-fx-background-color: #3d3d3d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        <ImageView fitHeight="57.0" fitWidth="303.0" layoutX="284.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="15.0">
+        <Label layoutY="6.0" prefHeight="57.0" prefWidth="600.0" style="-fx-background-color: #3d3d3d;"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+        <ImageView fitHeight="35.0" fitWidth="248.0" layoutX="431.3999938964844" layoutY="11.0" pickOnBounds="true"
+                   preserveRatio="true" AnchorPane.rightAnchor="16.4666748046875" AnchorPane.topAnchor="11.0">
             <image>
                 <Image url="@../../../../logo.png" />
             </image>
         </ImageView>
-        <Label layoutX="16.0" layoutY="149.0" prefHeight="35.0" prefWidth="107.0" text="Your ID">
+        <Label layoutX="18.0" layoutY="130.0" prefHeight="35.0" prefWidth="107.0" text="Your ID">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <Label layoutX="16.0" layoutY="190.0" prefHeight="35.0" prefWidth="107.0" text="Password">
+        <Label layoutX="18.0" layoutY="180.0" prefHeight="35.0" prefWidth="107.0" text="Password">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <Label fx:id="id" alignment="CENTER_RIGHT" layoutX="130.0" layoutY="149.0" prefHeight="35.0" prefWidth="129.0" text="Retrieving...">
+        <Label fx:id="id" alignment="CENTER_RIGHT" layoutX="151.0" layoutY="130.0" prefHeight="35.0" prefWidth="129.0"
+               text="Retrieving...">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <Label fx:id="password" alignment="CENTER_RIGHT" layoutX="130.0" layoutY="190.0" prefHeight="35.0" prefWidth="129.0" text="Retrieving...">
+        <Label fx:id="password" alignment="CENTER_RIGHT" layoutX="151.0" layoutY="180.0" prefHeight="35.0"
+               prefWidth="129.0" text="Retrieving...">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <Separator layoutY="183.0" prefHeight="3.0" prefWidth="255.0" />
-        <Separator layoutY="229.0" prefHeight="3.0" prefWidth="255.0" />
-        <Button layoutX="15.0" layoutY="243.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="239.0" style="-fx-background-radius: 0 0 0 0;" text="Copy to Clipboard">
+        <Separator layoutY="163.0" prefHeight="3.0" prefWidth="279.0"/>
+        <Separator layoutY="213.0" prefHeight="3.0" prefWidth="279.0"/>
+        <Button layoutX="18.0" layoutY="239.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="266.0"
+                style="-fx-background-radius: 0 0 0 0;" text="Copy to Clipboard">
             <font>
                 <Font size="20.0" />
             </font>
         </Button>
-        <Button layoutX="15.0" layoutY="303.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="91.0" style="-fx-background-radius: 0 0 0 0;" text="Generate ID" />
-        <Separator layoutX="300.0" layoutY="82.0" orientation="VERTICAL" prefHeight="272.0" prefWidth="6.0" />
-        <Label layoutX="319.0" layoutY="149.0" prefHeight="35.0" prefWidth="152.0" text="Connect to...">
+        <Separator layoutX="297.0" layoutY="57.0" orientation="VERTICAL" prefHeight="296.0" prefWidth="2.0"/>
+        <Label layoutX="315.0" layoutY="130.0" prefHeight="35.0" prefWidth="152.0" text="Connect to...">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <TextField fx:id="connection" layoutX="321.0" layoutY="189.0" prefHeight="35.0" prefWidth="266.0" style="-fx-border-radius: 0 0 0 0;" />
-        <Button defaultButton="true" layoutX="322.0" layoutY="243.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="266.0" style="-fx-background-radius: 0 0 0 0;" text="Connect!">
+        <TextField fx:id="connection" layoutX="315.0" layoutY="174.0" prefHeight="35.0" prefWidth="266.0"
+                   style="-fx-border-radius: 0 0 0 0;"/>
+        <Button defaultButton="true" layoutX="315.0" layoutY="239.0" mnemonicParsing="false" prefHeight="51.0"
+                prefWidth="266.0" style="-fx-background-radius: 0 0 0 0;" text="Connect!">
             <font>
                 <Font size="24.0" />
             </font>
         </Button>
-        <Label layoutX="14.0" layoutY="82.0" prefHeight="57.0" prefWidth="266.0" text="Local Computer" textFill="#00000054">
+        <Label layoutX="42.0" layoutY="53.0" prefHeight="57.0" prefWidth="218.0" text="Local Computer"
+               textFill="#00000054">
             <font>
                 <Font size="31.0" />
             </font>
         </Label>
-        <Label layoutX="319.0" layoutY="82.0" prefHeight="57.0" prefWidth="266.0" text="Remote Computer" textFill="#00000054">
+        <Label layoutX="321.0" layoutY="53.0" prefHeight="57.0" prefWidth="254.0" text="Remote Computer"
+               textFill="#00000054">
             <font>
                 <Font size="31.0" />
             </font>
         </Label>
-        <ImageView fitHeight="35.0" fitWidth="37.0" layoutX="563.0" layoutY="318.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="35.0" fitWidth="37.0" layoutX="557.0" layoutY="318.0" pickOnBounds="true"
+                   preserveRatio="true">
             <image>
                 <Image url="@../../../../github.png" />
             </image>
         </ImageView>
-        <Label layoutX="390.0" layoutY="314.0" prefHeight="35.0" prefWidth="168.0" text="Check it out on Github! &lt;3">
+        <Label layoutX="384.0" layoutY="314.0" prefHeight="35.0" prefWidth="168.0" text="Check it out on Github! &lt;3">
             <font>
                 <Font size="14.0" />
             </font>
         </Label>
-        <Button layoutX="118.0" layoutY="303.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="137.0" style="-fx-background-radius: 0 0 0 0;" text="Generate Password" />
+        <Button layoutX="18.0" layoutY="296.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="266.0"
+                style="-fx-background-radius: 0 0 0 0;" text="Generate Password"/>
     </children>
 </AnchorPane>
