@@ -2,10 +2,13 @@ package org.anglur.vision
 
 import javafx.application.Application
 import javafx.application.Platform
+import javafx.application.Platform.runLater
 import javafx.fxml.FXML
 import javafx.scene.Scene
+import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import tornadofx.App
 import tornadofx.FX.Companion.application
@@ -22,9 +25,15 @@ class Vision : View() {
 
 	override val root: AnchorPane by fxml()
 
-	@FXML lateinit var connection: TextField
+	val connection: TextField by fxid()
+	val id: Label by fxid()
+	val password: Label by fxid()
 
 	init {
+		id.text = encode(address()).splitEvery(3)
+		password.text = generatePass().toString()
+
+
 		with(primaryStage) {
 			title = "Vision"
 
@@ -36,12 +45,18 @@ class Vision : View() {
 			//stylesheets.add(Css.MAIN)
 			//primaryStage.icons.add(Icons.FAVICON.image)
 
-			Platform.runLater {
-				connection.requestFocus()
-			}
+			runLater(connection::requestFocus)
 		}
 	}
 
+}
+
+fun String.splitEvery(n: Int) = split(Regex("(?<=\\G${"." * n})")).joinToString(" ")
+
+operator fun String.times(n: Int): String {
+	var result = this
+	if (n > 1) for (i in 1..n - 1) result += this
+	return result
 }
 
 class VisionApp : App() {
