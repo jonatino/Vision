@@ -7,8 +7,8 @@ import tornadofx.FX
 import tornadofx.find
 
 class VisionApp : App() {
-
-	override val primaryView = VisionView::class
+	
+	override val primaryView = VisionGUI::class
 
 	override fun start(stage: Stage) {
 		FX.primaryStage = stage
