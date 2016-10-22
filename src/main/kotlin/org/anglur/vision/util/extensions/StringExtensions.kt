@@ -1,8 +1,8 @@
 @file:JvmName("StringExtensions")
 
-package org.anglur.vision.util
+package org.anglur.vision.util.extensions
 
-fun String.splitEvery(n: Int) = split(Regex("(?<=\\G${"." * n})")).joinToString(" ")
+fun String.splitEvery(n: Int) = split(Regex("(?<=\\G${"." * n})")).joinToString(" ").trim()
 
 operator fun String.times(n: Int): String {
 	var result = this

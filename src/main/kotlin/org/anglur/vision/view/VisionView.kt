@@ -1,13 +1,13 @@
 package org.anglur.vision.view
 
 import javafx.application.Platform.runLater
+import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.AnchorPane
-import org.anglur.vision.util.AddressGrabber.address
-import org.anglur.vision.util.IDSystem.encode
-import org.anglur.vision.util.PassGenerator
-import org.anglur.vision.util.splitEvery
+import org.anglur.vision.util.Clipboard
+import org.anglur.vision.util.Password
+import org.anglur.vision.util.UID
 import tornadofx.View
 import kotlin.concurrent.thread
 
@@ -18,6 +18,9 @@ class VisionView : View() {
 	val connection: TextField by fxid()
 	val id: Label by fxid()
 	val password: Label by fxid()
+	val copyToClipboard: Button by fxid()
+	val generatePassword: Button by fxid()
+	val connect: Button by fxid()
 
 	init {
 		with(primaryStage) {
@@ -32,13 +35,16 @@ class VisionView : View() {
 
 			runLater(connection::requestFocus)
 		}
-
-		password.text = PassGenerator.generatePass()
-
+		
+		password.textProperty().bind(Password.property())
+		id.textProperty().bind(UID.property())
+		
+		generatePassword.setOnAction { Password.new() }
+		copyToClipboard.setOnAction { Clipboard.set("vision:id=${id.text}:password=${password.text}") }
+		
 		thread {
-			val address = address()
 			runLater {
-				id.text = encode(address).splitEvery(3)
+				UID.create() //Run on new thread so we dont hang when trying to grab external ip :-)
 			}
 		}
 	}
