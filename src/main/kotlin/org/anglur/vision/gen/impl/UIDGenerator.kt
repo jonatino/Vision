@@ -12,20 +12,22 @@ class UIDGenerator : Generator() {
 	override fun generate(): String {
 		val bytes = localAddress.address.address
 		
-		val buf = ByteBuffer.allocate(6)
-		buf.put(bytes).putShort(localAddress.port.toShort())
+		val buf = ByteBuffer.allocate(7)
+		buf.put(1).putShort(localAddress.port.toShort()).put(bytes)
 		
-		return BigInteger(buf.array()).toString(36).toUpperCase()
+		return BigInteger(buf.array()).toString(36).toUpperCase().substring(1)
 	}
 	
 	//TODO move this to proper location
 	fun decode(id: String): InetSocketAddress {
-		val buf = ByteBuffer.wrap(BigInteger(id.toLowerCase(), 36).toByteArray())
+		val buf = ByteBuffer.wrap(BigInteger("5" + id.toLowerCase(), 36).toByteArray())
+		
+		buf.get()
+		val port = java.lang.Short.toUnsignedInt(buf.short)
 		
 		val address = ByteArray(4)
 		buf.get(address)
 		
-		val port = java.lang.Short.toUnsignedInt(buf.short)
 		
 		return InetSocketAddress(InetAddress.getByAddress(address), port)
 	}
