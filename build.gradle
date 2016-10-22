@@ -27,11 +27,21 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    all*.exclude group: 'org.bytedeco', module: 'javacpp-presets'
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     compile "no.tornado:tornadofx:1.5.5"
     compile "org.controlsfx:controlsfx:8.40.12"
+
+    compile "org.bytedeco:javacv:1.2"
+    compile "org.bytedeco:javacpp:1.2.1"
+
+    compile group: 'org.bytedeco.javacpp-presets', name: 'ffmpeg', version: '3.1.2-1.2'
+    compile group: 'org.bytedeco.javacpp-presets', name: 'ffmpeg', version: '3.1.2-1.2', classifier: 'windows-x86_64'
 }
 
 buildscript {
@@ -43,8 +53,6 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-        compile group: 'org.bytedeco', name: 'javacv', version: '1.2'
     }
 
 }
