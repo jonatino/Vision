@@ -21,7 +21,6 @@ class JNACapture : ScreenCapturer() {
 	
 	init {
 		outputBitmap = GDI32.CreateCompatibleBitmap(windowDC, captureArea.width, captureArea.height)
-		println("Init")
 		GDI32.SelectObject(blitDC, outputBitmap)
 	}
 	
@@ -44,7 +43,7 @@ class JNACapture : ScreenCapturer() {
 			bi.bmiHeader.biCompression = 0
 			return bufferedImageFromBitmap(blitDC, outputBitmap, bi)
 		} else {
-			throw RuntimeException("This should never be null rofl")
+			throw RuntimeException("This should never be null")
 		}
 	}
 	
