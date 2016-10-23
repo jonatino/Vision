@@ -22,12 +22,17 @@ import javafx.application.Platform.runLater
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.effect.DropShadowBuilder
+import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
+import javafx.scene.paint.Color
 import org.anglur.vision.capture.CaptureMode
 import org.anglur.vision.guid.Password
 import org.anglur.vision.guid.UID
 import org.anglur.vision.util.Clipboard
 import tornadofx.View
+import java.awt.Desktop
+import java.net.URI
 import kotlin.concurrent.thread
 
 class VisionGUI : View() {
@@ -40,6 +45,8 @@ class VisionGUI : View() {
 	val copyToClipboard: Button by fxid()
 	val generatePassword: Button by fxid()
 	val connect: Button by fxid()
+	val github: ImageView by fxid()
+	val githubLink: Label by fxid()
 	
 	companion object {
 		
@@ -47,12 +54,13 @@ class VisionGUI : View() {
 		
 	}
 	
+	val mouseOver = DropShadowBuilder.create()
+			.color(Color.rgb(50, 50, 50, .588)).build()
+	
 	init {
 		with(primaryStage) {
 			title = "Vision"
 			
-			minHeight = 300.0
-			minWidth = 575.0
 			isResizable = false
 			
 			runLater {
@@ -65,6 +73,32 @@ class VisionGUI : View() {
 		
 		generatePassword.setOnAction { Password.new() }
 		copyToClipboard.setOnAction { Clipboard.set("vision:id=${id.text}:password=${password.text}") }
+		
+		github.setOnMouseEntered {
+			githubLink.isUnderline = true
+			github.effect = mouseOver
+		}
+		github.setOnMouseExited {
+			githubLink.isUnderline = false
+			github.effect = null
+		}
+		
+		githubLink.setOnMouseEntered {
+			githubLink.isUnderline = true
+			github.effect = mouseOver
+		}
+		githubLink.setOnMouseExited {
+			githubLink.isUnderline = false
+			github.effect = null
+		}
+		
+		githubLink.setOnMouseClicked {
+			if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(URI("https://github.com/Jonatino/Vision"))
+		}
+		
+		github.setOnMouseClicked {
+			if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(URI("https://github.com/Jonatino/Vision"))
+		}
 		
 		connect.setOnAction {
 			val desktopFrame = DesktopFrame.show()

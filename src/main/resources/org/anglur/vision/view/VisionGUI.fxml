@@ -88,11 +88,12 @@
             <Font size="31.0"/>
         </font>
     </Label>
-    <ImageView fitHeight="35.0" fitWidth="37.0" layoutX="557.0" layoutY="318.0" pickOnBounds="true"
+    <ImageView fx:id="github" fitHeight="35.0" fitWidth="37.0" layoutX="557.0" layoutY="318.0" pickOnBounds="true"
                preserveRatio="true">
         <Image url="@img/github.png"/>
     </ImageView>
-    <Label layoutX="384.0" layoutY="314.0" prefHeight="35.0" prefWidth="168.0" text="Check it out on Github! &lt;3">
+    <Label fx:id="githubLink" layoutX="384.0" layoutY="314.0" prefHeight="35.0" prefWidth="168.0"
+           text="Check it out on GitHub! &lt;3">
         <font>
             <Font size="14.0"/>
         </font>
