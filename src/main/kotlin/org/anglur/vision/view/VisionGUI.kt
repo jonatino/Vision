@@ -61,7 +61,9 @@ class VisionGUI : View() {
 			minWidth = 575.0
 			isResizable = false
 			
-			runLater(connection::requestFocus)
+			runLater {
+				connection.requestFocus()
+			}
 		}
 		
 		password.textProperty().bind(Password.property)
