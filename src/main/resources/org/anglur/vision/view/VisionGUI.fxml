@@ -30,7 +30,7 @@
            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
     <ImageView fitHeight="35.0" fitWidth="248.0" layoutX="431.3999938964844" layoutY="11.0" pickOnBounds="true"
                preserveRatio="true" AnchorPane.rightAnchor="16.4666748046875" AnchorPane.topAnchor="11.0">
-        <Image url="@../../../../logo.png"/>
+        <Image url="@img/logo.png"/>
     </ImageView>
     <Label layoutX="18.0" layoutY="130.0" prefHeight="35.0" prefWidth="107.0" text="Your ID">
         <font>
@@ -90,7 +90,7 @@
     </Label>
     <ImageView fitHeight="35.0" fitWidth="37.0" layoutX="557.0" layoutY="318.0" pickOnBounds="true"
                preserveRatio="true">
-        <Image url="@../../../../github.png"/>
+        <Image url="@img/github.png"/>
     </ImageView>
     <Label layoutX="384.0" layoutY="314.0" prefHeight="35.0" prefWidth="168.0" text="Check it out on Github! &lt;3">
         <font>

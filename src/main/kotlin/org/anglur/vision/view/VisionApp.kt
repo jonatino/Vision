@@ -36,7 +36,7 @@ class VisionApp : App() {
 		val view = find(primaryView)
 		stage.apply {
 			scene = Scene(view.root)
-			icons.add(Image(VisionGUI::class.java.getResource("../../../../icon.png").toExternalForm()))
+			icons.add(Image(VisionGUI::class.java.getResource("img/icon.png").toExternalForm()))
 			scene.stylesheets.addAll(FX.stylesheets)
 			show()
 		}

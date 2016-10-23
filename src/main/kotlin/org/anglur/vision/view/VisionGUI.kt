@@ -75,7 +75,7 @@ class VisionGUI : View() {
 		val desktopFrame = find(DesktopFrame::class)
 		val stage = Stage()
 		stage.title = "Vision - Id: 432 340 439 Name: ${InetAddress.getLocalHost().hostName}"
-		stage.icons.add(Image(VisionGUI::class.java.getResource("../../../../icon.png").toExternalForm()))
+		stage.icons.add(Image(VisionGUI::class.java.getResource("img/icon.png").toExternalForm()))
 		stage.scene = Scene(desktopFrame.root, 1920.0, 1080.0, Color.BLACK)
 		
 		connect.setOnAction {
