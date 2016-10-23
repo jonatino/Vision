@@ -7,7 +7,7 @@ import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 
-class UIDGenerator : Generator() {
+class UIDGenerator : Generator {
 	
 	override fun generate(): String {
 		val bytes = localAddress.address.address

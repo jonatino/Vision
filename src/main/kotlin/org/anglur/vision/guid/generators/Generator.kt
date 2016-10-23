@@ -1,7 +1,7 @@
 package org.anglur.vision.guid.generators
 
-abstract class Generator {
+interface Generator {
 	
-	abstract fun generate(): String
+	fun generate(): String
 	
 }

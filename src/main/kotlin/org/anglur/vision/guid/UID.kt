@@ -6,20 +6,13 @@ import org.anglur.vision.util.extensions.splitEvery
 
 object UID {
 	
-	private val currentValue by lazy {
-		id = generator.generate().splitEvery(3)
-		val currentValue = SimpleStringProperty()
-		currentValue.set(id)
-		
-		currentValue
-	}
-	
 	val generator = UIDGenerator()
 	
-	private lateinit var id: String
+	val property by lazy {
+		SimpleStringProperty(generator.generate().splitEvery(3))
+	}
 	
-	fun property() = currentValue
+	fun create() = property.get()
 	
-	fun create() = id
 	
 }

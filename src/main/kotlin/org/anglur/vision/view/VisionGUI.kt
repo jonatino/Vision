@@ -46,8 +46,8 @@ class VisionGUI : View() {
 			runLater(connection::requestFocus)
 		}
 		
-		password.textProperty().bind(Password.property())
-		id.textProperty().bind(UID.property())
+		password.textProperty().bind(Password.property)
+		id.textProperty().bind(UID.property)
 		
 		generatePassword.setOnAction { Password.new() }
 		copyToClipboard.setOnAction { Clipboard.set("vision:id=${id.text}:password=${password.text}") }

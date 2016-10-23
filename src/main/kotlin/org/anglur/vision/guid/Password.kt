@@ -5,7 +5,7 @@ import org.anglur.vision.guid.generators.impl.PasswordGenerator
 
 object Password {
 	
-	private val currentPassword = SimpleStringProperty()
+	val property = SimpleStringProperty()
 	
 	val generator = PasswordGenerator()
 	
@@ -13,13 +13,11 @@ object Password {
 		new()
 	}
 	
-	fun property() = currentPassword
-	
-	fun get() = currentPassword.get()
+	fun get() = property.get()
 	
 	fun new(): String {
 		val password = generator.generate()
-		currentPassword.set(password)
+		property.set(password)
 		return password
 	}
 	
