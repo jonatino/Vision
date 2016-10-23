@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://dl.dropboxusercontent.com/u/91292881/ShareX/2016/10/U222ntitled-1.png"/>
+  <img src="https://dl.dropboxusercontent.com/u/91292881/ShareX/2016/10/logo.png"/>
 </p>
 
 * * *
@@ -14,4 +14,6 @@ Vision is an open source Kotlin application that provides FREE remote desktop ca
 
 # Screenshots
 
-![Alt text](https://dl.dropboxusercontent.com/u/91292881/ShareX/2016/10/java_2016-10-18_21-19-06.png "Gui Demo")
+![Alt text](https://dl.dropboxusercontent.com/u/91292881/ShareX/2016/10/java_2016-10-23_02-05-22.png "Gui Demo1")
+![Alt text](https://dl.dropboxusercontent.com/u/91292881/ShareX/2016/10/java_2016-10-23_02-06-01.png "Gui Demo2")
+![Alt text](https://dl.dropboxusercontent.com/u/91292881/ShareX/2016/10/java_2016-10-23_02-06-28.png "Gui Demo3")
