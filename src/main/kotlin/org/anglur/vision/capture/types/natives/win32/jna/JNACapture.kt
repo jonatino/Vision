@@ -15,28 +15,29 @@ import java.awt.image.*
  */
 class JNACapture : ScreenCapturer() {
 	
-	private val windowDC = User32.GetDC(User32.GetDesktopWindow())
-	private val blitDC = GDI32.CreateCompatibleDC(windowDC)
-	private val outputBitmap by lazy {
-		val bitmap = GDI32.CreateCompatibleBitmap(windowDC, width, height)
-		GDI32.SelectObject(blitDC, bitmap)
-		
-		bitmap
+	private var windowDC = User32.GetDC(User32.GetDesktopWindow())
+	private var blitDC = GDI32.CreateCompatibleDC(windowDC)
+	private var outputBitmap: WinDef.HBITMAP
+	
+	init {
+		outputBitmap = GDI32.CreateCompatibleBitmap(windowDC, captureArea.width, captureArea.height)
+		println("Init")
+		GDI32.SelectObject(blitDC, outputBitmap)
 	}
 	
-	override fun capture(): BufferedImage {
-		GDI32.BitBlt(blitDC, 0, 0, width, height, windowDC, x, y, GDI32.SRCCOPY)
+	override fun snap(): BufferedImage {
+		GDI32.BitBlt(blitDC, 0, 0, captureArea.width, captureArea.height, windowDC, captureArea.x, captureArea.y, GDI32.SRCCOPY)
 		
 		if (showCursor) {
 			val ci = CURSORINFO()
 			ci.cbSize = ci.size()
 			if (User32.GetCursorInfo(ci))
-				User32.DrawIconEx(blitDC, ci.ptScreenPos!!.x - x, ci.ptScreenPos!!.y - y, ci.hCursor!!, 0, 0, 0, null, DI_NORMAL)
+				User32.DrawIconEx(blitDC, ci.ptScreenPos!!.x - captureArea.x, ci.ptScreenPos!!.y - captureArea.y, ci.hCursor!!, 0, 0, 0, null, DI_NORMAL)
 		}
 		
 		val bi = WinGDI.BITMAPINFO(40)
 		bi.bmiHeader.biSize = 40
-		val ok = GDI32.GetDIBits(blitDC, outputBitmap, 0, height, null as ByteArray?, bi, DIB_RGB_COLORS)
+		val ok = GDI32.GetDIBits(blitDC, outputBitmap, 0, captureArea.height, null as ByteArray?, bi, DIB_RGB_COLORS)
 		if (ok) {
 			val bih = bi.bmiHeader
 			bih.biHeight = -Math.abs(bih.biHeight)
@@ -45,6 +46,11 @@ class JNACapture : ScreenCapturer() {
 		} else {
 			throw RuntimeException("This should never be null rofl")
 		}
+	}
+	
+	override fun resize(x: Int, y: Int, width: Int, height: Int) {
+		outputBitmap = GDI32.CreateCompatibleBitmap(windowDC, captureArea.width, captureArea.height)
+		GDI32.SelectObject(blitDC, outputBitmap)
 	}
 	
 	override fun destroy() {

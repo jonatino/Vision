@@ -2,9 +2,10 @@ package org.anglur.vision.capture.types
 
 import org.anglur.vision.capture.ScreenCapturer
 import sun.awt.ComponentFactory
-import java.awt.*
+import java.awt.GraphicsDevice
+import java.awt.Rectangle
+import java.awt.Toolkit
 import java.awt.image.*
-import java.awt.peer.MouseInfoPeer
 import java.awt.peer.RobotPeer
 import java.lang.reflect.Method
 import java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment as gfx
@@ -16,8 +17,6 @@ class RobotCapture constructor(device: GraphicsDevice = gfx().defaultScreenDevic
 	private var getRGBPixelsMethod: Method? = null
 	private var peer: RobotPeer
 	internal var model: ColorModel = DirectColorModel(32, 0xff0000, 0xff00, 0xff)
-	private var hasMouseInfoPeer: Boolean = false
-	private var mouseInfoPeer: MouseInfoPeer? = null
 	
 	init {
 		val toolkit = Toolkit.getDefaultToolkit()
@@ -31,13 +30,14 @@ class RobotCapture constructor(device: GraphicsDevice = gfx().defaultScreenDevic
 			methodType = 0
 		} catch (ex: Exception) {
 		}
-		if (methodType < 0)
+		if (methodType < 0) {
 			try {
 				method = peerClass.getDeclaredMethod("getScreenPixels", *arrayOf<Class<*>>(Rectangle::class.java, IntArray::class.java))
 				methodType = 1
 			} catch (ex: Exception) {
 			}
-		if (methodType < 0)
+		}
+		if (methodType < 0) {
 			try {
 				method = peerClass.getDeclaredMethod("getScreenPixels", *arrayOf<Class<*>>(Integer.TYPE, Rectangle::class.java, IntArray::class.java))
 				methodType = 2
@@ -50,7 +50,8 @@ class RobotCapture constructor(device: GraphicsDevice = gfx().defaultScreenDevic
 					}
 			} catch (ex: Exception) {
 			}
-		if (methodType < 0)
+		}
+		if (methodType < 0) {
 			try {
 				method = peerClass.getDeclaredMethod("getRGBPixelsImpl", *arrayOf<Class<*>>(Class.forName("sun.awt.X11GraphicsConfig"), Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE, IntArray::class.java))
 				methodType = 3
@@ -63,6 +64,7 @@ class RobotCapture constructor(device: GraphicsDevice = gfx().defaultScreenDevic
 				}
 			} catch (ex: Exception) {
 			}
+		}
 		if (methodType >= 0) {
 			getRGBPixelsMethod = method
 			getRGBPixelsMethodType = methodType
@@ -75,74 +77,30 @@ class RobotCapture constructor(device: GraphicsDevice = gfx().defaultScreenDevic
 	fun getRGBPixels(bounds: Rectangle) = peer.getRGBPixels(bounds)
 	
 	fun getRGBPixels(x: Int, y: Int, width: Int, height: Int, pixels: IntArray): Boolean {
-		if (getRGBPixelsMethod != null)
-			try {
-				if (getRGBPixelsMethodType == 0)
-					getRGBPixelsMethod!!.invoke(peer, arrayOf<Any>(Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), pixels))
-				else if (getRGBPixelsMethodType == 1)
-					getRGBPixelsMethod!!.invoke(peer, arrayOf(Rectangle(x, y, width, height), pixels))
-				else if (getRGBPixelsMethodType == 2)
-					getRGBPixelsMethod!!.invoke(peer, arrayOf(getRGBPixelsMethodParam!!, Rectangle(x, y, width, height), pixels))
-				else
-					getRGBPixelsMethod!!.invoke(peer, arrayOf<Any>(getRGBPixelsMethodParam!!, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), pixels))
-				return true
-			} catch (ex: Exception) {
+		if (getRGBPixelsMethod != null) {
+			when (getRGBPixelsMethodType) {
+				0 -> getRGBPixelsMethod!!.invoke(peer, arrayOf<Any>(Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), pixels))
+				1 -> getRGBPixelsMethod!!.invoke(peer, arrayOf(Rectangle(x, y, width, height), pixels))
+				2 -> getRGBPixelsMethod!!.invoke(peer, arrayOf(getRGBPixelsMethodParam!!, Rectangle(x, y, width, height), pixels))
+				else -> getRGBPixelsMethod!!.invoke(peer, arrayOf<Any>(getRGBPixelsMethodParam!!, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), pixels))
 			}
+			return true
+		}
 		val tmp = getRGBPixels(Rectangle(x, y, width, height))
 		System.arraycopy(tmp, 0, pixels, 0, width * height)
 		return false
 	}
 	
+	override fun resize(x: Int, y: Int, width: Int, height: Int) {
+	}
+	
 	override fun destroy() {
-		getRGBPixelsMethodParam = null
-		val method = getRGBPixelsMethod
-		if (method != null) {
-			getRGBPixelsMethod = null
-			try {
-				method.isAccessible = false
-			} catch (ex: Exception) {
-			}
-		}
-		//Using reflection now because of some peers not having ANY support at all (1.5)
-		try {
-			peer.javaClass.getDeclaredMethod("dispose", null).invoke(peer, arrayOfNulls<Class<*>>(0))
-		} catch (ex: Exception) {
-		}
+		getRGBPixelsMethod?.isAccessible = false
+		peer.javaClass.getDeclaredMethod("dispose", null).invoke(peer, arrayOfNulls<Class<*>>(0))
 	}
 	
-	override fun capture() =
-			BufferedImage(model, Raster.createWritableRaster(model.createCompatibleSampleModel(width, height),
-					DataBufferInt(getRGBPixels(Rectangle(width, height)), width * height), null), false, null)
-	
-	fun getMouseInfo(point: Point?): GraphicsDevice {
-		if (!hasMouseInfoPeer) {
-			hasMouseInfoPeer = true
-			try {
-				val toolkit = Toolkit.getDefaultToolkit()
-				val method = toolkit.javaClass.getDeclaredMethod("getMouseInfoPeer", null)
-				try {
-					method.isAccessible = true
-					mouseInfoPeer = method.invoke(toolkit, arrayOfNulls<Any>(0)) as MouseInfoPeer
-				} finally {
-					method.isAccessible = false
-				}
-			} catch (ex: Exception) {
-			}
-		}
-		if (mouseInfoPeer != null) {
-			val device = mouseInfoPeer!!.fillPointWithCoords(point ?: Point())
-			val devices = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices
-			return devices[device]
-		}
-		val info = MouseInfo.getPointerInfo()
-		if (point != null) {
-			val location = info.location
-			point.x = location.x
-			point.y = location.y
-		}
-		return info.device
-	}
-	
-	val screenDevice = getMouseInfo(null)
+	override fun snap() =
+			BufferedImage(model, Raster.createWritableRaster(model.createCompatibleSampleModel(captureArea.width, captureArea.height),
+					DataBufferInt(getRGBPixels(Rectangle(captureArea.width, captureArea.height)), captureArea.width * captureArea.height), null), false, null)
 	
 }

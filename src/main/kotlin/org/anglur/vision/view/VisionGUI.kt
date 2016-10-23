@@ -9,7 +9,7 @@ import javafx.scene.image.Image
 import javafx.scene.layout.AnchorPane
 import javafx.scene.paint.Color
 import javafx.stage.Stage
-import org.anglur.vision.capture.CapturingMode
+import org.anglur.vision.capture.CaptureMode
 import org.anglur.vision.util.Clipboard
 import org.anglur.vision.util.Password
 import org.anglur.vision.util.UID
@@ -29,7 +29,11 @@ class VisionGUI : View() {
 	val generatePassword: Button by fxid()
 	val connect: Button by fxid()
 	
-	val screengrabber = CapturingMode.JNA()
+	companion object {
+		
+		val screengrabber = CaptureMode.jna()
+		
+	}
 	
 	init {
 		with(primaryStage) {
@@ -41,13 +45,6 @@ class VisionGUI : View() {
 			
 			runLater(connection::requestFocus)
 		}
-		
-		screengrabber.x = -1920
-		screengrabber.y = 179
-		screengrabber.width = 1920
-		screengrabber.maxWidth = 1920
-		screengrabber.height = 1080
-		screengrabber.maxHeight = 1080
 		
 		password.textProperty().bind(Password.property())
 		id.textProperty().bind(UID.property())
