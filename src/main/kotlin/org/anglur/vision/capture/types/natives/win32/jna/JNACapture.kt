@@ -30,8 +30,8 @@ class JNACapture : ScreenCapturer() {
 		if (showCursor) {
 			val ci = CURSORINFO()
 			ci.cbSize = ci.size()
-			User32.GetCursorInfo(ci)
-			User32.DrawIconEx(blitDC, ci.ptScreenPos!!.x - x, ci.ptScreenPos!!.y - y, ci.hCursor!!, 0, 0, 0, null, DI_NORMAL)
+			if (User32.GetCursorInfo(ci))
+				User32.DrawIconEx(blitDC, ci.ptScreenPos!!.x - x, ci.ptScreenPos!!.y - y, ci.hCursor!!, 0, 0, 0, null, DI_NORMAL)
 		}
 		
 		val bi = WinGDI.BITMAPINFO(40)

@@ -1,4 +1,4 @@
-package org.anglur.vision.view
+package org.anglur.vision.view.impl
 
 import javafx.scene.image.ImageView
 

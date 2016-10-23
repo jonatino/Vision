@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.control.TabPane
 import javafx.scene.image.Image
+import org.anglur.vision.view.impl.ScalableImageView
 import tornadofx.View
 import java.awt.image.BufferedImage
 

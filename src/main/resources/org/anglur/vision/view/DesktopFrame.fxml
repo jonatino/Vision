@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import org.anglur.vision.view.ScalableImageView?>
+<?import org.anglur.vision.view.impl.ScalableImageView?>
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="677.0"
          prefWidth="1129.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.60"
          xmlns:fx="http://javafx.com/fxml/1">
