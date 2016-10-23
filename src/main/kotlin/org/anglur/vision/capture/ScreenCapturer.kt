@@ -37,13 +37,13 @@ abstract class ScreenCapturer {
 		val list = ArrayList<Screen>()
 		
 		val defaultDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().defaultScreenDevice
+		list.add(Screen(defaultDevice.defaultConfiguration.bounds, 0, true))
 		
-		for (i in 0..GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices.lastIndex) {
-			val device = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices[i]
-			if (device.iDstring == defaultDevice.iDstring)
-				list.add(Screen(defaultDevice.defaultConfiguration.bounds, i, true))
-			else
-				list.add(Screen(device.defaultConfiguration.bounds, i, false))
+		for (i in 1..GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices.lastIndex) {
+			val device = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices[i - 1]
+			if (device.iDstring == defaultDevice.iDstring) continue
+			
+			list.add(Screen(device.defaultConfiguration.bounds, i, false))
 		}
 		
 		list
