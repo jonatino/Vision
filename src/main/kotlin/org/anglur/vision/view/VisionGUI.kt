@@ -19,21 +19,15 @@
 package org.anglur.vision.view
 
 import javafx.application.Platform.runLater
-import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
 import javafx.scene.layout.AnchorPane
-import javafx.scene.paint.Color
-import javafx.stage.Stage
 import org.anglur.vision.capture.CaptureMode
 import org.anglur.vision.guid.Password
 import org.anglur.vision.guid.UID
 import org.anglur.vision.util.Clipboard
 import tornadofx.View
-import tornadofx.find
-import java.net.InetAddress
 import kotlin.concurrent.thread
 
 class VisionGUI : View() {
@@ -72,19 +66,13 @@ class VisionGUI : View() {
 		generatePassword.setOnAction { Password.new() }
 		copyToClipboard.setOnAction { Clipboard.set("vision:id=${id.text}:password=${password.text}") }
 		
-		val desktopFrame = find(DesktopFrame::class)
-		val stage = Stage()
-		stage.title = "Vision - Id: 432 340 439 Name: ${InetAddress.getLocalHost().hostName}"
-		stage.icons.add(Image(VisionGUI::class.java.getResource("img/icon.png").toExternalForm()))
-		stage.scene = Scene(desktopFrame.root, 1920.0, 1080.0, Color.BLACK)
-		
 		connect.setOnAction {
-			stage.show()
+			val desktopFrame = DesktopFrame.show()
 			
 			thread {
 				var iterations: Int = 0
 				var time: Long = 0
-				while (stage.isShowing) {
+				while (desktopFrame.isShowing) {
 					val stamp = System.currentTimeMillis()
 					desktopFrame.display(captureMode.capture())
 					time += System.currentTimeMillis() - stamp
@@ -92,16 +80,13 @@ class VisionGUI : View() {
 					if (iterations++ % 100 == 0) {
 						println("Took " + time / iterations.toDouble() + "ms avg per frame (over 100 frames)")
 					}
+					
+					//Thread.sleep((1000.0 / captureMode.frameRate).toLong())
 				}
-				
 			}
 		}
 		
-		thread {
-			runLater {
-				UID.create() //Run on new thread so we dont hang when trying to grab external ip :-)
-			}
-		}
+		UID.create() //Run on new thread so we dont hang when trying to grab external ip :-)
 	}
 	
 }

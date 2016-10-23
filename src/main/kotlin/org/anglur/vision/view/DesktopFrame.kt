@@ -22,17 +22,36 @@ import javafx.application.Platform.runLater
 import javafx.beans.property.SimpleObjectProperty
 import javafx.embed.swing.SwingFXUtils
 import javafx.geometry.Pos
+import javafx.scene.Scene
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.image.Image
+import javafx.scene.paint.Color
+import javafx.stage.Stage
 import org.anglur.vision.view.impl.ScalableImageView
 import tornadofx.View
+import tornadofx.find
 import tornadofx.hbox
 import tornadofx.plusAssign
 import java.awt.image.BufferedImage
+import java.net.InetAddress
 import java.util.*
 
 class DesktopFrame : View() {
+	
+	companion object {
+		
+		fun show(): DesktopFrame {
+			val frame = find(DesktopFrame::class)
+			frame.stage = Stage()
+			frame.stage.title = "Vision - Id: 432 340 439 Name: ${InetAddress.getLocalHost().hostName}"
+			frame.stage.icons.add(Image(VisionGUI::class.java.getResource("img/icon.png").toExternalForm()))
+			frame.stage.scene = Scene(frame.root, 1920.0, 1080.0, Color.BLACK)
+			frame.stage.show()
+			return frame
+		}
+		
+	}
 	
 	override val root: TabPane by fxml()
 	
@@ -42,6 +61,8 @@ class DesktopFrame : View() {
 	
 	var currentView: ScalableImageView? = null
 		get() = screenViews[captureConfig.currentScreen]
+	
+	lateinit var stage: Stage
 	
 	private val currentImage = SimpleObjectProperty<Image>()
 	
@@ -88,6 +109,9 @@ class DesktopFrame : View() {
 			currentImage.value = SwingFXUtils.toFXImage(img, null)
 		}
 	}
+	
+	var isShowing: Boolean = false
+		get() = stage.isShowing
 	
 	
 }
