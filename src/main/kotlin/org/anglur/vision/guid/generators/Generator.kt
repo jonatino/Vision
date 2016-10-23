@@ -1,4 +1,4 @@
-package org.anglur.vision.gen
+package org.anglur.vision.guid.generators
 
 abstract class Generator {
 	

@@ -1,6 +1,6 @@
-package org.anglur.vision.gen.impl
+package org.anglur.vision.guid.generators.impl
 
-import org.anglur.vision.gen.Generator
+import org.anglur.vision.guid.generators.Generator
 import java.util.concurrent.ThreadLocalRandom.current as tlr
 
 class PasswordGenerator : Generator() {

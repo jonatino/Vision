@@ -1,7 +1,7 @@
-package org.anglur.vision.util
+package org.anglur.vision.guid
 
 import javafx.beans.property.SimpleStringProperty
-import org.anglur.vision.gen.impl.UIDGenerator
+import org.anglur.vision.guid.generators.impl.UIDGenerator
 import org.anglur.vision.util.extensions.splitEvery
 
 object UID {

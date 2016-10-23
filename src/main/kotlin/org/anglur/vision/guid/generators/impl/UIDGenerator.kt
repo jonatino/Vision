@@ -1,6 +1,6 @@
-package org.anglur.vision.gen.impl
+package org.anglur.vision.guid.generators.impl
 
-import org.anglur.vision.gen.Generator
+import org.anglur.vision.guid.generators.Generator
 import org.anglur.vision.net.http.IPFetcher.localAddress
 import java.math.BigInteger
 import java.net.InetAddress

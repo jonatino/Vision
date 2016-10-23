@@ -10,9 +10,9 @@ import javafx.scene.layout.AnchorPane
 import javafx.scene.paint.Color
 import javafx.stage.Stage
 import org.anglur.vision.capture.CaptureMode
+import org.anglur.vision.guid.Password
+import org.anglur.vision.guid.UID
 import org.anglur.vision.util.Clipboard
-import org.anglur.vision.util.Password
-import org.anglur.vision.util.UID
 import tornadofx.View
 import tornadofx.find
 import java.net.InetAddress

@@ -1,7 +1,7 @@
-package org.anglur.vision.util
+package org.anglur.vision.guid
 
 import javafx.beans.property.SimpleStringProperty
-import org.anglur.vision.gen.impl.PasswordGenerator
+import org.anglur.vision.guid.generators.impl.PasswordGenerator
 
 object Password {
 	
