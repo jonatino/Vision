@@ -33,7 +33,7 @@ abstract class ScreenCapturer {
 	
 	var paused: Boolean = false
 	
-	val monitors by lazy {
+	val screens by lazy {
 		val list = ArrayList<Screen>()
 		
 		val defaultDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().defaultScreenDevice
@@ -54,7 +54,7 @@ abstract class ScreenCapturer {
 	var currentScreen = 0
 		set(value) {
 			field = value
-			val bounds = monitors[value].bounds
+			val bounds = screens[value].bounds
 			lock.lock()
 			try {
 				resize(bounds.x, bounds.y, bounds.width, bounds.height)
@@ -63,8 +63,8 @@ abstract class ScreenCapturer {
 			}
 		}
 	
-	var captureArea = monitors[currentScreen].bounds
-		get() = monitors[currentScreen].bounds
+	var captureArea = screens[currentScreen].bounds
+		get() = screens[currentScreen].bounds
 	
 	fun capture(): BufferedImage {
 		if (paused) return NULL

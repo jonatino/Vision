@@ -27,7 +27,6 @@ import javafx.scene.control.TabPane
 import javafx.scene.image.Image
 import org.anglur.vision.view.impl.ScalableImageView
 import tornadofx.View
-import tornadofx.add
 import tornadofx.hbox
 import tornadofx.plusAssign
 import java.awt.image.BufferedImage
@@ -48,27 +47,28 @@ class DesktopFrame : View() {
 	
 	init {
 		with(primaryStage) {
-			for (i in 0..captureConfig.monitors.lastIndex) {
-				val screen = captureConfig.monitors[i]
+			for (i in 0..captureConfig.screens.lastIndex) {
+				val screen = captureConfig.screens[i]
 				val tab = Tab(screen.toString())
 				tab.id = screen.id.toString()
 				
-				this += hbox {
+				tab += hbox {
 					alignment = Pos.CENTER
 					style = "-fx-background-color: #191919;"
 					
-					val imageView = ScalableImageView()
-					screenViews.add(imageView)
-					add(imageView)
-					
-					tab.add(this)
-					root.tabs.add(tab)
+					with(ScalableImageView()) {
+						screenViews += this
+						this@hbox += this
+					}
 				}
+				
+				root.tabs += tab
 			}
 			currentView!!.imageProperty().bind(currentImage)
 		}
 		
-		root.selectionModel.selectedItemProperty().addListener { ov, oldTab, newTab ->
+		root.selectionModel.selectedItemProperty().addListener {
+			ov, oldTab, newTab ->
 			val old = oldTab.id.toInt()
 			val new = newTab.id.toInt()
 			
