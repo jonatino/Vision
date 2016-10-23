@@ -2,18 +2,19 @@
 
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import org.anglur.vision.view.ScalableImageView?>
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="677.0"
          prefWidth="1129.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.60"
          xmlns:fx="http://javafx.com/fxml/1">
     <tabs>
         <Tab text="Monitor 1">
             <content>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: black;">
+                <HBox fx:id="hBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
+                      style="-fx-background-color: #191919;">
                     <children>
-                        <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true"/>
+                        <ScalableImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true"/>
                     </children>
                 </HBox>
             </content>

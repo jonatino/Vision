@@ -8,6 +8,9 @@ abstract class CaptureConfig {
 	
 	var showCursor = true
 	
+	var maxWidth = 2560
+	var maxHeight = 1440
+	
 	var width = 2560
 	
 	var height = 1440
