@@ -15,15 +15,13 @@ import java.awt.image.*
  */
 class JNACapture : ScreenCapturer() {
 	
-	private val windowDC: WinDef.HDC
-	private val outputBitmap: WinDef.HBITMAP
-	private val blitDC: WinDef.HDC
-	
-	init {
-		windowDC = User32.GetDC(User32.GetDesktopWindow())
-		outputBitmap = GDI32.CreateCompatibleBitmap(windowDC, width, height)
-		blitDC = GDI32.CreateCompatibleDC(windowDC)
-		GDI32.SelectObject(blitDC, outputBitmap)
+	private val windowDC = User32.GetDC(User32.GetDesktopWindow())
+	private val blitDC = GDI32.CreateCompatibleDC(windowDC)
+	private val outputBitmap by lazy {
+		val bitmap = GDI32.CreateCompatibleBitmap(windowDC, width, height)
+		GDI32.SelectObject(blitDC, bitmap)
+		
+		bitmap
 	}
 	
 	override fun capture(): BufferedImage {
@@ -33,7 +31,7 @@ class JNACapture : ScreenCapturer() {
 			val ci = CURSORINFO()
 			ci.cbSize = ci.size()
 			User32.GetCursorInfo(ci)
-			User32.DrawIconEx(blitDC, ci.ptScreenPos!!.x, ci.ptScreenPos!!.y, ci.hCursor!!, 0, 0, 0, null, DI_NORMAL)
+			User32.DrawIconEx(blitDC, ci.ptScreenPos!!.x - x, ci.ptScreenPos!!.y - y, ci.hCursor!!, 0, 0, 0, null, DI_NORMAL)
 		}
 		
 		val bi = WinGDI.BITMAPINFO(40)
