@@ -29,7 +29,7 @@ class ScalableImageView : ImageView() {
 	private var maxWidth = -1.0
 	private var maxHeight = -1.0
 	
-	override fun minWidth(width: Double) = 300.0
+	override fun minWidth(width: Double) = maxWidth(width) / 2
 	
 	override fun prefWidth(width: Double): Double {
 		val I = image ?: return maxWidth(width)
@@ -42,7 +42,7 @@ class ScalableImageView : ImageView() {
 		return maxWidth
 	}
 	
-	override fun minHeight(height: Double) = 300.0
+	override fun minHeight(height: Double) = maxHeight(height) / 2
 	
 	override fun prefHeight(height: Double): Double {
 		val I = image ?: return maxHeight(height)
