@@ -18,10 +18,10 @@
 
 package org.anglur.vision.capture
 
-import java.awt.GraphicsEnvironment
 import java.awt.image.BufferedImage
 import java.util.*
 import java.util.concurrent.locks.ReentrantLock
+import java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment as gfx
 
 abstract class ScreenCapturer {
 	
@@ -36,14 +36,14 @@ abstract class ScreenCapturer {
 	val screens by lazy {
 		val list = ArrayList<Screen>()
 		
-		val defaultDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().defaultScreenDevice
+		val defaultDevice = gfx().defaultScreenDevice
 		
 		var id = 0
 		
 		list.add(Screen(defaultDevice.defaultConfiguration.bounds, id, true))
 		
-		for (i in 0..GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices.lastIndex) {
-			val device = GraphicsEnvironment.getLocalGraphicsEnvironment().screenDevices[i]
+		for (i in 0..gfx().screenDevices.lastIndex) {
+			val device = gfx().screenDevices[i]
 			if (device.iDstring == defaultDevice.iDstring) continue
 			
 			list.add(Screen(device.defaultConfiguration.bounds, ++id, false))

@@ -30,6 +30,7 @@ import org.anglur.vision.capture.CaptureMode
 import org.anglur.vision.guid.Password
 import org.anglur.vision.guid.UID
 import org.anglur.vision.util.Clipboard
+import org.anglur.vision.util.extensions.withMultiple
 import tornadofx.View
 import java.awt.Desktop
 import java.net.URI
@@ -50,12 +51,11 @@ class VisionGUI : View() {
 	
 	companion object {
 		
-		val captureMode = CaptureMode.jna()
-		
+		val captureMode by lazy { CaptureMode.jna() }
 	}
 	
 	val mouseOver = DropShadowBuilder.create()
-			.color(Color.rgb(50, 50, 50, .588)).build()
+			.color(Color.rgb(50, 50, 50, .588)).build()!!
 	
 	init {
 		with(primaryStage) {
@@ -74,30 +74,22 @@ class VisionGUI : View() {
 		generatePassword.setOnAction { Password.new() }
 		copyToClipboard.setOnAction { Clipboard.set("vision:id=${id.text}:password=${password.text}") }
 		
-		github.setOnMouseEntered {
-			githubLink.isUnderline = true
-			github.effect = mouseOver
-		}
-		github.setOnMouseExited {
-			githubLink.isUnderline = false
-			github.effect = null
-		}
-		
-		githubLink.setOnMouseEntered {
-			githubLink.isUnderline = true
-			github.effect = mouseOver
-		}
-		githubLink.setOnMouseExited {
-			githubLink.isUnderline = false
-			github.effect = null
-		}
-		
-		githubLink.setOnMouseClicked {
-			if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(URI("https://github.com/Jonatino/Vision"))
-		}
-		
-		github.setOnMouseClicked {
-			if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(URI("https://github.com/Jonatino/Vision"))
+		withMultiple(githubLink, github) {
+			
+			setOnMouseExited {
+				githubLink.isUnderline = false
+				github.effect = null
+			}
+			
+			setOnMouseEntered {
+				githubLink.isUnderline = true
+				github.effect = mouseOver
+			}
+			
+			setOnMouseClicked {
+				if (Desktop.isDesktopSupported()) Desktop.getDesktop().browse(URI("https://github.com/Jonatino/Vision"))
+			}
+			
 		}
 		
 		connect.setOnAction {
@@ -114,13 +106,11 @@ class VisionGUI : View() {
 					if (iterations++ % 100 == 0) {
 						println("Took " + time / iterations.toDouble() + "ms avg per frame (over 100 frames)")
 					}
-					
-					//Thread.sleep((1000.0 / captureMode.frameRate).toLong())
 				}
 			}
 		}
 		
-		UID.create() //Run on new thread so we dont hang when trying to grab external ip :-)
+		UID.create()
 	}
 	
 }
