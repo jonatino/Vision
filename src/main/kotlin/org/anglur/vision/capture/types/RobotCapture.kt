@@ -119,6 +119,6 @@ class RobotCapture constructor(device: GraphicsDevice = gfx().defaultScreenDevic
 	
 	override fun snap() =
 			BufferedImage(model, Raster.createWritableRaster(model.createCompatibleSampleModel(captureArea.width, captureArea.height),
-					DataBufferInt(getRGBPixels(Rectangle(captureArea.width, captureArea.height)), captureArea.width * captureArea.height), null), false, null)
+					DataBufferInt(getRGBPixels(Rectangle(captureArea.x, captureArea.y, captureArea.width, captureArea.height)), captureArea.width * captureArea.height), null), false, null)
 	
 }
