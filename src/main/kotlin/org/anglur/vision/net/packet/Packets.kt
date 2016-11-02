@@ -16,22 +16,15 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.anglur.vision.guid.generators.impl
+package org.anglur.vision.net.packet
 
-import org.anglur.vision.guid.generators.Generator
-import org.anglur.vision.net.http.IPFetcher.localAddress
-import java.math.BigInteger
-import java.nio.ByteBuffer
+import io.netty.buffer.ByteBuf
+import org.anglur.vision.net.packet.`in`.handshakePacket
 
-class UIDGenerator : Generator {
-	
-	override fun generate(): String {
-		val bytes = localAddress.address.address
-		
-		val buf = ByteBuffer.allocate(7)
-		buf.put(1).putShort(localAddress.port.toShort()).put(bytes)
-		
-		return BigInteger(buf.array()).toString(36).toUpperCase().substring(1)
-	}
-	
-}
+val incoming = hashMapOf(0 to handshakePacket())
+
+fun incomingPacket(block: ByteBuf.() -> Unit) = block
+
+val outgoing = hashMapOf(0 to handshakePacket())
+
+fun outgoingPacket(block: ByteBuf.() -> Unit) = block

@@ -16,22 +16,22 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.anglur.vision.guid.generators.impl
+package org.anglur.vision.util.extensions
 
-import org.anglur.vision.guid.generators.Generator
-import org.anglur.vision.net.http.IPFetcher.localAddress
-import java.math.BigInteger
-import java.nio.ByteBuffer
+import io.netty.buffer.ByteBuf
 
-class UIDGenerator : Generator {
+fun ByteBuf.readString(): String {
+	val start = this.readerIndex()
 	
-	override fun generate(): String {
-		val bytes = localAddress.address.address
-		
-		val buf = ByteBuffer.allocate(7)
-		buf.put(1).putShort(localAddress.port.toShort()).put(bytes)
-		
-		return BigInteger(buf.array()).toString(36).toUpperCase().substring(1)
-	}
+	while (this.readByte() !== 0.toByte());
 	
+	val len = this.readerIndex() - start
+	
+	val str = ByteArray(len)
+	this.readerIndex(start)
+	this.readBytes(str)
+	
+	return String(str, 0, len - 1) /* Do not include null terminator */
 }
+
+fun ByteBuf.writeString(s: String) = this.writeBytes(s.toByteArray()).writeByte(0)

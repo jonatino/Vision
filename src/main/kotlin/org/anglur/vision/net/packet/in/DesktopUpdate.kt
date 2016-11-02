@@ -16,22 +16,16 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.anglur.vision.guid.generators.impl
+package org.anglur.vision.net.packet.`in`
 
-import org.anglur.vision.guid.generators.Generator
-import org.anglur.vision.net.http.IPFetcher.localAddress
-import java.math.BigInteger
-import java.nio.ByteBuffer
+import org.anglur.vision.net.packet.incomingPacket
+import java.io.ByteArrayInputStream
+import javax.imageio.ImageIO
 
-class UIDGenerator : Generator {
+val desktopUpdate = incomingPacket {
+	//TODO send only the part of the image thats changed
+	val bytes = array()
 	
-	override fun generate(): String {
-		val bytes = localAddress.address.address
-		
-		val buf = ByteBuffer.allocate(7)
-		buf.put(1).putShort(localAddress.port.toShort()).put(bytes)
-		
-		return BigInteger(buf.array()).toString(36).toUpperCase().substring(1)
-	}
 	
+	val image = ImageIO.read(ByteArrayInputStream(bytes))
 }

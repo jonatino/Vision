@@ -33,13 +33,17 @@ configurations {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '$kotlin_version'
 
-    compile "no.tornado:tornadofx:1.5.5"
-    compile "org.controlsfx:controlsfx:8.40.12"
+    compile group: 'no.tornado', name: 'tornadofx', version: '1.5.5'
+    compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.12'
 
     compile group: 'net.java.dev.jna', name: 'jna', version: '4.2.2'
     compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.2.2'
+
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.6.Final'
+
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
 
     compile group: 'org.bytedeco', name: 'javacv', version: '1.2'
     compile group: 'org.bytedeco', name: 'javacpp', version: '1.2.4'

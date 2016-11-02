@@ -22,6 +22,10 @@ import javafx.beans.property.SimpleStringProperty
 import org.anglur.vision.guid.generators.impl.UIDGenerator
 import org.anglur.vision.util.extensions.fxThread
 import org.anglur.vision.util.extensions.splitEvery
+import java.math.BigInteger
+import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.nio.ByteBuffer
 
 object UID {
 	
@@ -39,4 +43,18 @@ object UID {
 	
 	fun create() = property.get()
 	
+	
+	//TODO move this to proper location
+	fun raw(): InetSocketAddress {
+		val buf = ByteBuffer.wrap(BigInteger("5" + property.get().toLowerCase(), 36).toByteArray())
+		
+		buf.get()
+		val port = java.lang.Short.toUnsignedInt(buf.short)
+		
+		val address = ByteArray(4)
+		buf.get(address)
+		
+		
+		return InetSocketAddress(InetAddress.getByAddress(address), port)
+	}
 }

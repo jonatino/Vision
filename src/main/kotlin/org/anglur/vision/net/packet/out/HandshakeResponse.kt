@@ -16,22 +16,27 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.anglur.vision.guid.generators.impl
+package org.anglur.vision.net.packet.out
 
-import org.anglur.vision.guid.generators.Generator
-import org.anglur.vision.net.http.IPFetcher.localAddress
-import java.math.BigInteger
-import java.nio.ByteBuffer
+import org.anglur.vision.net.packet.outgoingPacket
 
-class UIDGenerator : Generator {
+
+fun handshakeResponse(r: Response, key: Long) = outgoingPacket {
+	writeByte(r.ordinal)
+	writeLong(key)
+}
+
+
+enum class Response {
 	
-	override fun generate(): String {
-		val bytes = localAddress.address.address
+	ALLOW, DENY, INVALID_PASSWORD, TIMEOUT;
+	
+	companion object {
 		
-		val buf = ByteBuffer.allocate(7)
-		buf.put(1).putShort(localAddress.port.toShort()).put(bytes)
+		val values = Response.values()
 		
-		return BigInteger(buf.array()).toString(36).toUpperCase().substring(1)
+		operator fun get(i: Int) = values[i]
+		
 	}
 	
 }
