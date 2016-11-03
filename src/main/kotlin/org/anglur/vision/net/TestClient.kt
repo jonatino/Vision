@@ -32,16 +32,14 @@ object ClientTest {
 	
 	internal val PORT = 43594
 	
-	@Throws(Exception::class)
 	@JvmStatic fun main(args: Array<String>) {
-		
 		val group = NioEventLoopGroup()
 		try {
 			val b = Bootstrap()
 			b.group(group)
 					.channel(NioDatagramChannel::class.java)
 					.handler(object : SimpleChannelInboundHandler<DatagramPacket>() {
-						@Throws(Exception::class)
+						
 						override fun channelRead0(ctx: ChannelHandlerContext, msg: DatagramPacket) {
 							println("Read")
 						}
@@ -52,12 +50,9 @@ object ClientTest {
 			
 			val buff = Unpooled.buffer()
 			buff.writeByte(0)
-			buff.writeString("JJQ 5UZ 5CD") //We start every packet off with the ID
-			
+			buff.writeString("JJQ 5UZ 5CD")
 			buff.writeString("password")
-			buff.writeString("Jonathan")
 			ch.writeAndFlush(DatagramPacket(buff, InetSocketAddress("localhost", PORT))).sync()
-			
 			
 			if (!ch.closeFuture().await(5000)) {
 				System.err.println("Quote request timed out.")
@@ -66,4 +61,5 @@ object ClientTest {
 			group.shutdownGracefully()
 		}
 	}
+	
 }

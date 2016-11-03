@@ -41,12 +41,13 @@ object UID {
 		prop
 	}
 	
-	fun create() = property.get()
+	fun get() = property.get()
 	
 	
 	//TODO move this to proper location
 	fun raw(): InetSocketAddress {
-		val buf = ByteBuffer.wrap(BigInteger("5" + property.get().toLowerCase(), 36).toByteArray())
+		val id = "5${property.get().replace(" ", "").toLowerCase()}"
+		val buf = ByteBuffer.wrap(BigInteger(id, 36).toByteArray())
 		
 		buf.get()
 		val port = java.lang.Short.toUnsignedInt(buf.short)

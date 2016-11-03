@@ -18,19 +18,7 @@
 
 package org.anglur.vision.util.extensions
 
-import io.netty.buffer.ByteBuf
+import java.util.concurrent.ThreadLocalRandom.current as tlr
 
-fun ByteBuf.readString(): String {
-	val bldr = StringBuilder()
-	
-	var b: Byte
-	while (readableBytes() > 0) {
-		b = readByte()
-		if (b.toInt() == 0) break
-		
-		bldr.append(b.toChar())
-	}
-	return bldr.toString()
-}
-
-fun ByteBuf.writeString(s: String) = this.writeBytes(s.toByteArray()).writeByte(0)
+fun <T : Comparable<T>> rand(longRange: ClosedRange<T>): T
+		= tlr().nextLong(longRange.start as Long, longRange.endInclusive as Long) as T

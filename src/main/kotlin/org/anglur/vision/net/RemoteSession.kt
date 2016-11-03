@@ -20,6 +20,7 @@ package org.anglur.vision.net
 
 import io.netty.channel.Channel
 import org.anglur.vision.guid.UID
+import org.anglur.vision.util.extensions.rand
 import org.anglur.vision.view.DesktopFrame
 import org.anglur.vision.view.VisionGUI
 import kotlin.concurrent.thread
@@ -29,35 +30,43 @@ class RemoteSession(val id: String, val password: String) {
 	val address = UID.raw()
 	
 	lateinit var channel: Channel
-	var secret: Long = -1
+	
+	val secret = rand(Long.MIN_VALUE..Long.MAX_VALUE)
 	
 	private var startTime = System.currentTimeMillis()
 	
-	val desktopFrame by lazy { DesktopFrame.show() }
+	lateinit var desktopFrame: DesktopFrame
 	
 	var connected = false
 	
 	init {
+		println("$id, $secret")
 		Sessions += this
 	}
 	
 	fun connect() {
 		if (connected) return
 		
-		connected = true
-		thread {
-			var iterations: Int = 0
-			var time: Long = 0
-			while (desktopFrame.isShowing) {
-				val stamp = System.currentTimeMillis()
-				desktopFrame.display(VisionGUI.captureMode.capture())
-				time += System.currentTimeMillis() - stamp
-				
-				if (iterations++ % 100 == 0) {
-					println("Took " + time / iterations.toDouble() + "ms avg per frame (over 100 frames)")
+		udp {
+			println("Rite")
+			connected = true
+			
+			desktopFrame = DesktopFrame.show()
+			
+			thread {
+				var iterations: Int = 0
+				var time: Long = 0
+				while (desktopFrame.isShowing) {
+					val stamp = System.currentTimeMillis()
+					desktopFrame.display(VisionGUI.captureMode.capture())
+					time += System.currentTimeMillis() - stamp
+					
+					if (iterations++ % 100 == 0) {
+						println("Took " + time / iterations.toDouble() + "ms avg per frame (over 100 frames)")
+					}
 				}
 			}
-		}
+		}.bind(43594).await()
 	}
 	
 	fun disconnect() {
@@ -70,20 +79,24 @@ class RemoteSession(val id: String, val password: String) {
 
 object Sessions {
 	
-	private val sessions = mutableMapOf<String, RemoteSession>()
+	private val sessions = mutableMapOf<Long, RemoteSession>()
+	private val secrets = mutableMapOf<String, Long>()
 	
-	operator fun get(id: String) = sessions[id]!!
+	operator fun get(secret: Long) = sessions[secret]
+	
+	operator fun get(id: String) = sessions[secrets[id]]!!
 	
 	infix operator fun plusAssign(session: RemoteSession) {
-		sessions.put(session.id, session)
+		sessions.put(session.secret, session)
+		secrets.put(session.id, session.secret)
+		
+		println(secrets)
+		println(sessions)
 	}
 	
 	infix operator fun minusAssign(session: RemoteSession) {
-		sessions.remove(session.id)
-	}
-	
-	infix operator fun minusAssign(id: String) {
-		sessions.remove(id)
+		sessions.remove(session.secret)
+		secrets.remove(session.id, session.secret)
 	}
 	
 }

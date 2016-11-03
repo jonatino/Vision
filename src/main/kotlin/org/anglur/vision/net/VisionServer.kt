@@ -30,28 +30,14 @@ import io.netty.channel.socket.DatagramPacket
 import io.netty.channel.socket.nio.NioDatagramChannel
 import io.netty.handler.codec.MessageToMessageDecoder
 import io.netty.util.AttributeKey
-import org.anglur.vision.guid.Password
-import org.anglur.vision.net.packet.out.Response
-import org.anglur.vision.net.packet.out.handshakeResponse
+import org.anglur.vision.net.packet.incoming
 import org.anglur.vision.util.extensions.readString
-import java.util.*
-import java.util.concurrent.ThreadLocalRandom
 
 class UDPServer(val group: EventLoopGroup, val channel: Class<out Channel>) {
 	
 	val decoder = Decoder()
 	
 	fun bind(port: Int) = Bootstrap().group(group).handler(Handler(decoder)).channel(channel).bind(port)
-	
-	inner class IncomingPackets {
-		internal operator fun Int.invoke(body: ByteBuf.() -> Unit) {
-			decoder.handlers.put(this, body)
-		}
-	}
-	
-	internal inline fun incoming(body: IncomingPackets.() -> Unit) {
-		IncomingPackets().body()
-	}
 	
 }
 
@@ -77,71 +63,42 @@ class Decoder : MessageToMessageDecoder<DatagramPacket>() {
 		val buff = msg.content()
 		if (buff.readableBytes() > 0) {
 			val packetId = buff.readUnsignedByte().toInt()
-			
-			val theirId = buff.readString()
-			val session = Sessions[theirId]
-			
 			println("Packet $packetId")
+			
+			//If secret has not been set, read the id instead. This should only happen during handshake (packet 0)
+			val pos = buff.readerIndex()
+			val session = Sessions[buff.readLong()] ?: Sessions[buff.readerIndex(pos).readString()]
+			
 			if (!ctx.channel().hasAttr(SESSION) && packetId != 0) {
 				//If the key hasn't been set, than they are trying to fake a packet
 				ctx.channel().close()
 				return
-			}
-			when (packetId) {
-				0 -> {
-					val password = buff.readString()
-					val computerName = buff.readString()
-					
-					println("Password: $password, ComputerName: $computerName")
-					
-					val denied = false //Place holder
-					val timeout = false //Place holder
-					
-					var response = Response.ALLOW
-					
-					if (password != Password.get()) response = Response.INVALID_PASSWORD
-					else if (denied) response = Response.DENY
-					else if (timeout) response = Response.TIMEOUT
-					
-					var secret = -1L
-					if (response == Response.ALLOW) {
-						secret = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE)
-						session.secret = secret
-						session.channel = ctx.channel()
-						ctx.channel().attr(SESSION).set(session)
-					}
-					handshakeResponse(response, secret)
-				}
-				
-				
-				else -> handlers[packetId]!!(buff)
-			}
+			} else ctx.channel().attr(SESSION).set(session)
+			
+			incoming[packetId]!!(PacketPayload(buff, ctx, session))
 		}
 	}
 	
 	val SESSION = AttributeKey.valueOf<RemoteSession>("session")!!
 	
-	val handlers = HashMap<Int, ByteBuf.() -> Unit>()
-	
-	fun session(c: Channel): RemoteSession {
-		return c.attr(SESSION).get()!!
-	}
+	fun session(c: Channel): RemoteSession? = c.attr(SESSION).get()
 	
 	override fun channelActive(ctx: ChannelHandlerContext) {
-		session(ctx.channel()).connect()
+		session(ctx.channel())?.connect()
 	}
 	
 	override fun channelUnregistered(ctx: ChannelHandlerContext) {
-		session(ctx.channel()).disconnect()
+		session(ctx.channel())?.disconnect()
 	}
 	
-	override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
-	}
-	
+	override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) = TODO()
 	
 }
 
+class PacketPayload(val buff: ByteBuf, val ctx: ChannelHandlerContext, val session: RemoteSession)
+
 fun main(args: Array<String>) {
 	udp {
+		
 	}.bind(43594).await()
 }

@@ -22,8 +22,8 @@ import org.anglur.vision.net.packet.outgoingPacket
 
 
 fun handshakeResponse(r: Response, key: Long) = outgoingPacket {
-	writeByte(r.ordinal)
-	writeLong(key)
+	buff.writeByte(r.ordinal)
+	buff.writeLong(key)
 }
 
 

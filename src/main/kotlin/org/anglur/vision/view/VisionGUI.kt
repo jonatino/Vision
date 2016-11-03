@@ -29,12 +29,12 @@ import javafx.scene.paint.Color
 import org.anglur.vision.capture.CaptureMode
 import org.anglur.vision.guid.Password
 import org.anglur.vision.guid.UID
+import org.anglur.vision.net.RemoteSession
 import org.anglur.vision.util.Clipboard
 import org.anglur.vision.util.extensions.withMultiple
 import tornadofx.View
 import java.awt.Desktop
 import java.net.URI
-import kotlin.concurrent.thread
 
 class VisionGUI : View() {
 	
@@ -93,24 +93,15 @@ class VisionGUI : View() {
 		}
 		
 		connect.setOnAction {
-			val desktopFrame = DesktopFrame.show()
+			val input = connection.text.replace("vision:id=", "").split(":password=")
+			val id = UID.get() //input[0]
+			val password = Password.get() //input[1]
 			
-			thread {
-				var iterations: Int = 0
-				var time: Long = 0
-				while (desktopFrame.isShowing) {
-					val stamp = System.currentTimeMillis()
-					desktopFrame.display(captureMode.capture())
-					time += System.currentTimeMillis() - stamp
-					
-					if (iterations++ % 100 == 0) {
-						println("Took " + time / iterations.toDouble() + "ms avg per frame (over 100 frames)")
-					}
-				}
-			}
+			val session = RemoteSession(id, password)
+			session.connect()
 		}
 		
-		UID.create()
+		UID.get()
 	}
 	
 }

@@ -24,7 +24,7 @@ import javax.imageio.ImageIO
 
 val desktopUpdate = incomingPacket {
 	//TODO send only the part of the image thats changed
-	val bytes = array()
+	val bytes = buff.array()
 	
 	
 	val image = ImageIO.read(ByteArrayInputStream(bytes))

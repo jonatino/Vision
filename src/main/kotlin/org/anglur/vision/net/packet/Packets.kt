@@ -18,13 +18,13 @@
 
 package org.anglur.vision.net.packet
 
-import io.netty.buffer.ByteBuf
+import org.anglur.vision.net.PacketPayload
 import org.anglur.vision.net.packet.`in`.handshakePacket
 
 val incoming = hashMapOf(0 to handshakePacket())
 
-fun incomingPacket(block: ByteBuf.() -> Unit) = block
+fun incomingPacket(block: PacketPayload.() -> Unit) = block
 
 val outgoing = hashMapOf(0 to handshakePacket())
 
-fun outgoingPacket(block: ByteBuf.() -> Unit) = block
+fun outgoingPacket(block: PacketPayload.() -> Unit) = block

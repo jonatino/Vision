@@ -21,24 +21,25 @@ package org.anglur.vision.net.packet.`in`
 import org.anglur.vision.guid.Password
 import org.anglur.vision.net.packet.incomingPacket
 import org.anglur.vision.net.packet.out.Response
+import org.anglur.vision.net.packet.out.handshakeResponse
 import org.anglur.vision.util.extensions.readString
 
 fun handshakePacket() = incomingPacket {
-	val password = readString()
-	val computerName = readString()
+	val password = buff.readString()
 	
-	println("Password: $password, ComputerName: $computerName")
+	println("Username: ${session.id}, Password: $password")
 	
 	val denied = false //Place holder
 	val timeout = false //Place holder
 	
 	var response = Response.ALLOW
 	
-	if (password != Password.get())
-		response = Response.INVALID_PASSWORD
-	else if (denied)
-		response = Response.DENY
-	else if (timeout)
-		response = Response.TIMEOUT
+	if (password != Password.get()) response = Response.INVALID_PASSWORD
+	else if (denied) response = Response.DENY
+	else if (timeout) response = Response.TIMEOUT
 	
+	if (response == Response.ALLOW) {
+		session.channel = ctx.channel()
+	}
+	handshakeResponse(response, session.secret)
 }
