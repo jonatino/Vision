@@ -21,8 +21,6 @@ package org.anglur.vision.net.packet
 import org.anglur.vision.net.PacketPayload
 import org.anglur.vision.net.packet.`in`.handshakePacket
 
-val incoming = hashMapOf(0 to handshakePacket())
-
 interface Packet {
 	
 	val id: Int
@@ -31,7 +29,8 @@ interface Packet {
 	
 }
 
-fun incomingPacket(block: PacketPayload.() -> Unit) = block
+val incoming = hashMapOf(0 to handshakePacket())
 
+fun incomingPacket(block: PacketPayload.() -> Unit) = block
 
 fun outgoingPacket(block: PacketPayload.() -> Unit) = block

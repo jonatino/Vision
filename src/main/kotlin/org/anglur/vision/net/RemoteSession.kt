@@ -33,11 +33,9 @@ class RemoteSession(val id: String, val password: String) {
 	
 	val partner = UID.address(id)
 	
-	lateinit var ctx: ChannelHandlerContext
-	
 	val secret = rand(Long.MIN_VALUE..Long.MAX_VALUE)
 	
-	private var startTime = System.currentTimeMillis()
+	lateinit var ctx: ChannelHandlerContext
 	
 	lateinit var desktopFrame: DesktopFrame
 	
@@ -46,7 +44,6 @@ class RemoteSession(val id: String, val password: String) {
 	val write = Unpooled.buffer()!!
 	
 	init {
-		println("$id, $secret")
 		Sessions += this
 	}
 	
@@ -98,16 +95,17 @@ object Sessions {
 	operator fun get(id: String) = sessions[secrets[id]]!!
 	
 	infix operator fun plusAssign(session: RemoteSession) {
+		require(!sessions.containsKey(session.secret))
+		
 		sessions.put(session.secret, session)
 		secrets.put(session.id, session.secret)
-		
-		println(secrets)
-		println(sessions)
 	}
 	
 	infix operator fun minusAssign(session: RemoteSession) {
+		require(sessions.containsKey(session.secret))
+		
 		sessions.remove(session.secret)
-		secrets.remove(session.id, session.secret)
+		secrets.remove(session.id)
 	}
 	
 }

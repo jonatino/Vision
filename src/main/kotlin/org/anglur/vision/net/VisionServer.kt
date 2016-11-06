@@ -32,18 +32,17 @@ import io.netty.util.AttributeKey
 class UDPServer(val group: EventLoopGroup, val channel: Class<out Channel>) {
 	
 	val decoder = Decoder()
-	val encoder = Encoder()
 	
-	fun bind(port: Int) = Bootstrap().group(group).handler(Handler(decoder, encoder)).channel(channel).bind(port)
+	fun bind(port: Int) = Bootstrap().group(group).handler(Handler(decoder)).channel(channel).bind(port)
 	
 }
 
 val SESSION = AttributeKey.valueOf<RemoteSession>("session")!!
 
-internal class Handler(val decoder: Decoder, val encoder: Encoder) : ChannelInitializer<DatagramChannel>() {
+internal class Handler(val decoder: Decoder) : ChannelInitializer<DatagramChannel>() {
 	
 	override fun initChannel(ch: DatagramChannel) {
-		ch.pipeline().addFirst(decoder, encoder)
+		ch.pipeline().addFirst(decoder)
 	}
 	
 }
