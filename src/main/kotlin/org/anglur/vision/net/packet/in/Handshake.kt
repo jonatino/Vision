@@ -20,8 +20,8 @@ package org.anglur.vision.net.packet.`in`
 
 import org.anglur.vision.guid.Password
 import org.anglur.vision.net.packet.incomingPacket
-import org.anglur.vision.net.packet.out.Response
-import org.anglur.vision.net.packet.out.handshakeResponse
+import org.anglur.vision.net.packet.out.HandshakeResponse
+import org.anglur.vision.net.packet.out.HandshakeResponse.Response
 import org.anglur.vision.util.extensions.readString
 
 fun handshakePacket() = incomingPacket {
@@ -39,7 +39,8 @@ fun handshakePacket() = incomingPacket {
 	else if (timeout) response = Response.TIMEOUT
 	
 	if (response == Response.ALLOW) {
-		session.channel = ctx.channel()
+		session.ctx = ctx
 	}
-	handshakeResponse(response, session.secret)
+	
+	session.write(HandshakeResponse(response))
 }

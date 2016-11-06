@@ -23,8 +23,15 @@ import org.anglur.vision.net.packet.`in`.handshakePacket
 
 val incoming = hashMapOf(0 to handshakePacket())
 
+interface Packet {
+	
+	val id: Int
+	
+	operator fun invoke(): PacketPayload.() -> Unit
+	
+}
+
 fun incomingPacket(block: PacketPayload.() -> Unit) = block
 
-val outgoing = hashMapOf(0 to handshakePacket())
 
 fun outgoingPacket(block: PacketPayload.() -> Unit) = block

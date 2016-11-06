@@ -43,10 +43,8 @@ object UID {
 	
 	fun get() = property.get()
 	
-	
-	//TODO move this to proper location
-	fun raw(): InetSocketAddress {
-		val id = "5${property.get().replace(" ", "").toLowerCase()}"
+	fun address(id: String = "5${property.get().replace(" ", "").toLowerCase()}"): InetSocketAddress {
+		
 		val buf = ByteBuffer.wrap(BigInteger(id, 36).toByteArray())
 		
 		buf.get()
@@ -58,4 +56,5 @@ object UID {
 		
 		return InetSocketAddress(InetAddress.getByAddress(address), port)
 	}
+	
 }

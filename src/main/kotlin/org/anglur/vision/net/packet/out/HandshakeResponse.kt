@@ -18,24 +18,35 @@
 
 package org.anglur.vision.net.packet.out
 
+import org.anglur.vision.net.packet.Packet
 import org.anglur.vision.net.packet.outgoingPacket
 
 
-fun handshakeResponse(r: Response, key: Long) = outgoingPacket {
-	buff.writeByte(r.ordinal)
-	buff.writeLong(key)
-}
-
-
-enum class Response {
+class HandshakeResponse(val r: Response) : Packet {
 	
-	ALLOW, DENY, INVALID_PASSWORD, TIMEOUT;
+	override val id = 1
 	
-	companion object {
+	override operator fun invoke() = outgoingPacket {
+		buff.writeByte(1)
+		buff.writeLong(session.secret)
 		
-		val values = Response.values()
+		buff.writeByte(r.ordinal)
 		
-		operator fun get(i: Int) = values[i]
+		ctx.channel().writeAndFlush(buff)
+		println("Wrote")
+	}
+	
+	enum class Response {
+		
+		ALLOW, DENY, INVALID_PASSWORD, TIMEOUT;
+		
+		companion object {
+			
+			val values = Response.values()
+			
+			operator fun get(i: Int) = values[i]
+			
+		}
 		
 	}
 	

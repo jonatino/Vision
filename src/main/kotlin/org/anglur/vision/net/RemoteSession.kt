@@ -18,18 +18,22 @@
 
 package org.anglur.vision.net
 
-import io.netty.channel.Channel
+import io.netty.buffer.Unpooled
+import io.netty.channel.ChannelHandlerContext
+import io.netty.channel.socket.DatagramPacket
 import org.anglur.vision.guid.UID
+import org.anglur.vision.net.packet.Packet
 import org.anglur.vision.util.extensions.rand
+import org.anglur.vision.util.extensions.writePacket
 import org.anglur.vision.view.DesktopFrame
 import org.anglur.vision.view.VisionGUI
 import kotlin.concurrent.thread
 
 class RemoteSession(val id: String, val password: String) {
 	
-	val address = UID.raw()
+	val partner = UID.address(id)
 	
-	lateinit var channel: Channel
+	lateinit var ctx: ChannelHandlerContext
 	
 	val secret = rand(Long.MIN_VALUE..Long.MAX_VALUE)
 	
@@ -38,6 +42,8 @@ class RemoteSession(val id: String, val password: String) {
 	lateinit var desktopFrame: DesktopFrame
 	
 	var connected = false
+	
+	val write = Unpooled.buffer()!!
 	
 	init {
 		println("$id, $secret")
@@ -67,6 +73,11 @@ class RemoteSession(val id: String, val password: String) {
 				}
 			}
 		}.bind(43594).await()
+	}
+	
+	fun write(packet: Packet) {
+		write.writePacket(packet, this)
+		ctx.channel().writeAndFlush(DatagramPacket(write, partner))
 	}
 	
 	fun disconnect() {

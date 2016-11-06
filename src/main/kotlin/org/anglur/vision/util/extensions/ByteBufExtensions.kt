@@ -19,6 +19,8 @@
 package org.anglur.vision.util.extensions
 
 import io.netty.buffer.ByteBuf
+import org.anglur.vision.net.RemoteSession
+import org.anglur.vision.net.packet.Packet
 
 fun ByteBuf.readString(): String {
 	val bldr = StringBuilder()
@@ -34,3 +36,13 @@ fun ByteBuf.readString(): String {
 }
 
 fun ByteBuf.writeString(s: String) = this.writeBytes(s.toByteArray()).writeByte(0)
+
+
+fun ByteBuf.writePacket(s: Packet, session: RemoteSession) = apply {
+	clear()
+	
+	writeByte(s.id)
+	writeLong(session.secret)
+	
+	s.invoke()
+}

@@ -26,25 +26,24 @@ import io.netty.channel.ChannelInitializer
 import io.netty.channel.EventLoopGroup
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.DatagramChannel
-import io.netty.channel.socket.DatagramPacket
 import io.netty.channel.socket.nio.NioDatagramChannel
-import io.netty.handler.codec.MessageToMessageDecoder
 import io.netty.util.AttributeKey
-import org.anglur.vision.net.packet.incoming
-import org.anglur.vision.util.extensions.readString
 
 class UDPServer(val group: EventLoopGroup, val channel: Class<out Channel>) {
 	
 	val decoder = Decoder()
+	val encoder = Encoder()
 	
-	fun bind(port: Int) = Bootstrap().group(group).handler(Handler(decoder)).channel(channel).bind(port)
+	fun bind(port: Int) = Bootstrap().group(group).handler(Handler(decoder, encoder)).channel(channel).bind(port)
 	
 }
 
-internal class Handler(val decoder: Decoder) : ChannelInitializer<DatagramChannel>() {
+val SESSION = AttributeKey.valueOf<RemoteSession>("session")!!
+
+internal class Handler(val decoder: Decoder, val encoder: Encoder) : ChannelInitializer<DatagramChannel>() {
 	
 	override fun initChannel(ch: DatagramChannel) {
-		ch.pipeline().addFirst(decoder)
+		ch.pipeline().addFirst(decoder, encoder)
 	}
 	
 }
@@ -55,44 +54,6 @@ inline fun udp(group: EventLoopGroup = NioEventLoopGroup(),
 	val server = UDPServer(group, channel)
 	server.init()
 	return server
-}
-
-class Decoder : MessageToMessageDecoder<DatagramPacket>() {
-	
-	override fun decode(ctx: ChannelHandlerContext, msg: DatagramPacket, out: MutableList<Any>) {
-		val buff = msg.content()
-		if (buff.readableBytes() > 0) {
-			val packetId = buff.readUnsignedByte().toInt()
-			println("Packet $packetId")
-			
-			//If secret has not been set, read the id instead. This should only happen during handshake (packet 0)
-			val pos = buff.readerIndex()
-			val session = Sessions[buff.readLong()] ?: Sessions[buff.readerIndex(pos).readString()]
-			
-			if (!ctx.channel().hasAttr(SESSION) && packetId != 0) {
-				//If the key hasn't been set, than they are trying to fake a packet
-				ctx.channel().close()
-				return
-			} else ctx.channel().attr(SESSION).set(session)
-			
-			incoming[packetId]!!(PacketPayload(buff, ctx, session))
-		}
-	}
-	
-	val SESSION = AttributeKey.valueOf<RemoteSession>("session")!!
-	
-	fun session(c: Channel): RemoteSession? = c.attr(SESSION).get()
-	
-	override fun channelActive(ctx: ChannelHandlerContext) {
-		session(ctx.channel())?.connect()
-	}
-	
-	override fun channelUnregistered(ctx: ChannelHandlerContext) {
-		session(ctx.channel())?.disconnect()
-	}
-	
-	override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) = TODO()
-	
 }
 
 class PacketPayload(val buff: ByteBuf, val ctx: ChannelHandlerContext, val session: RemoteSession)
